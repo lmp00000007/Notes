@@ -1,0 +1,107 @@
+Notes - Pro Git
+
+---------- Chapter 1 ----------
+### Command
+git config --global <config.name> <config>		# 配置信息
+git config --list								# 查看所有配置信息
+git help <verb>									# 获取帮助
+
+---------- Chapter 2 ----------
+### Command
+git init					# 初始化仓库
+git clone [url]				# 从现有仓库克隆
+git status					# 确认当前状态
+git add <file>				# 跟踪（暂存）一个文件，用git add跟踪后的文件，做了修改之后需要重新用git add暂存更新的版本
+.gitignore					# 忽略某些文件，修改.gitignore
+git diff					# 尚未暂存的文件与已经暂存的文件的差异
+git diff --cached			# 已经暂存的文件与上次提交时的快照的差异
+git commit					# 提交更新
+git commit -m "<comment>"	# 提交更新附带comment
+git commit -a 				# 跳过git add，直接把修改过的tracked file 提交
+git rm <file>				# 从跟踪文件清单中移除某个文件
+git mv <file_1> <file_2>	# rename file_1 as file_2
+git mv <file_1> <file_2>	= mv <file_1> <file_2>; git rm <file_1>; git add <file_2>
+git log 					# 查看提交历史
+							    -p 按补丁格式显示每个更新之间的差异。
+							    --stat 显示每次更新的文件修改统计信息。
+							    --shortstat 只显示 --stat 中最后的行数修改添加移除统计。
+							    --name-only 仅在提交信息后显示已修改的文件清单。
+							    --name-status 显示新增、修改、删除的文件清单。
+							    --abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。
+							    --relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。
+							    --graph 显示 ASCII 图形表示的分支合并历史。
+							    --pretty 使用其他格式显示历史提交信息。可用的选项包括 oneline，short，full，fuller 和 format（后跟指定格式）。
+git log -p 					# 显示每次提交的内容差异
+git log --stat 				# 显示每次提交的增改行数的统计
+git log --pretty=oneline	# 单行显示提交历史
+git log --pretty=format "<%...>"	# 按照要求的格式显示log
+									    %H 提交对象（commit）的完整哈希字串
+									    %h 提交对象的简短哈希字串
+									    %T 树对象（tree）的完整哈希字串
+									    %t 树对象的简短哈希字串
+									    %P 父对象（parent）的完整哈希字串
+									    %p 父对象的简短哈希字串
+									    %an 作者（author）的名字
+									    %ae 作者的电子邮件地址
+									    %ad 作者修订日期（可以用 -date= 选项定制格式）
+									    %ar 作者修订日期，按多久以前的方式显示
+									    %cn 提交者(committer)的名字
+									    %ce 提交者的电子邮件地址
+									    %cd 提交日期
+									    %cr 提交日期，按多久以前的方式显示
+									    %s 提交说明
+git log --pretty=oneline --graph	# 带图形显示
+gitk 						# 图形化工具查看提交历史
+git commit amend 			# 修改最后一次提交，不会产生新的commit。用git add添加遗漏的文件，再用git commit amend补充提交
+git reset HEAD <file>		# 取消已经暂存的文件
+git checkout <fieldset>		# 丢弃对文件的修改
+git remote -v 							# 显示远程仓库地址
+git remote add <remote-name> [url]		# 添加远程仓库
+git fetch <remote-name>					# 从远程仓库抓取最新的数据
+git push <remote-name> <local-branch>	# 将本地分支推送到远程仓库
+git remote show <remote-name>			# 显示远程仓库的信息
+git remote rename <name_1> <name_2>		# rename remote repository name_1 as name_2
+git remote rm <remote-name>				# 删除远程仓库
+git tag												# 列出所有的tag
+git tag -a <tag> -m <comment>	# 新建一个含有附注的tag
+git show <tag>								# 显示tag的信息
+git tag -a <tag> <commit>			# 对之前的某次提交加注标签
+git config --global alias.<alias> <command>	# 对command添加别名
+
+### Notes
+# git的文件分为tracked和untracked
+# Git 使用的标签有两种类型：轻量级的（lightweight）和含附注的（annotated）
+
+---------- Chapter 3 ----------
+### Command
+git branch <branch>					# 新建分支
+git checkout <branch>				# 切换分支，使HEAD指向<branch>分支，并把工作目录中的文件换成了<branch>分支所指向的快照
+git checkout -b <branch>			# 新建并切换到<branch>
+git merge	 <branch>					# 将<branch>合并到当前分支
+git branch -d <branch>				# 删除<branch>分支
+git branch 									# 列出所有分支
+git branch --merged 					# 列出合并的分支
+git branch --no-merged				# 列出未合并的分支
+git branch -v 								# 列出最后一次提交的分支
+git fetch <remote-branch>			# 同步远程服务器branch上的数据到本地
+git push <remote-branch>	 <local-branch>							# 推送本地分支到远程分支
+git checkout -b <local-branch> <remote-branch> 				# 本地新建一个分支，跟踪远程的某个分支
+git push <remote>:<remote-branch>									# 删除远程分支，可以理解为抓一个本地的空白分支，推送到远程分支上，变相删除远程分支
+git rebase --onto <branch1>	<branch2> <branch3> 			# 在branch1上找出branch2和branch3的共同祖先，然后把他们在branch1上重演一遍
+
+
+
+
+### Notes
+# commit是一个指向暂存内容快照的指针
+# HEAD是一个指向正在工作中的本地指针
+# 如果顺着一个分支走下去可以到达另一个分支的话，那么 Git 在合并两者时，只会简单地把指针右移，因为这种单线的历史分支不存在任何需要解决的分歧，所以这种合并过程可以称为快进（Fast forward）。
+# 合并分支时遇到冲突，需要手动解决冲突
+# topic分支，在master分支遇到问题的时候新建一个issueXX的分支，之后还可以继续新建一个issueXXv2的分支。
+# 远程分支（remote branch）是对远程仓库中的分支的索引。它们是一些无法移动的本地分支；只有在 Git 进行网络交互时才会更新。远程分支就像是书签，提醒着你上次连接远程仓库时上面各分支的位置。
+# 用 (远程仓库名)/(分支名) 这样的形式表示远程分支
+# 衍合（rebase）的原理是回到两个分支最近的共同祖先，根据当前分支后续的历史提交对象，生成一系列补丁文件，然后以基底分支最后一个提交对象为新的出发点，逐个应用之前准备好的补丁文件，最后会生成一个新的合并提交对象。Ref: https://gitee.com/progit/3-Git-%E5%88%86%E6%94%AF.html#
+# 一旦分支中的提交对象发布到公共仓库，就千万不要对该分支进行衍合操作。
+
+
+
